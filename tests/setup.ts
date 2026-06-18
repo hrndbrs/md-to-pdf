@@ -8,22 +8,30 @@ vi.mock("@tauri-apps/api/core", () => ({
 
 vi.mock("@tauri-apps/api/path", () => ({
   dirname: vi.fn(async (p: string) => {
-    const parts = p.replace(/\\/g, "/").split("/");
+    const normalized = p.replace(/\\/g, "/");
+    const parts = normalized.split("/");
     parts.pop();
-    return parts.join("/");
+    const result = parts.join("/");
+    return result || ".";
   }),
-  basename: vi.fn(
-    async (p: string) => p.replace(/\\/g, "/").split("/").pop() ?? "",
-  ),
-  join: vi.fn(async (...parts: string[]) => parts.join("/")),
+  basename: vi.fn(async (p: string) => {
+    const normalized = p.replace(/\\/g, "/").replace(/\/$/, "");
+    return normalized.split("/").pop() ?? "";
+  }),
+  join: vi.fn(async (...parts: string[]) => {
+    const joined = parts.join("/");
+    return joined.replace(/\/+/g, "/");
+  }),
 }));
 
+export const mockWebviewWindow = {
+  setTitle: vi.fn().mockResolvedValue(undefined),
+  onDragDropEvent: vi.fn().mockResolvedValue(() => {}),
+  onCloseRequested: vi.fn().mockResolvedValue(() => {}),
+};
+
 vi.mock("@tauri-apps/api/webviewWindow", () => ({
-  getCurrentWebviewWindow: vi.fn(() => ({
-    setTitle: vi.fn().mockResolvedValue(undefined),
-    onDragDropEvent: vi.fn().mockResolvedValue(() => {}),
-    onCloseRequested: vi.fn().mockResolvedValue(() => {}),
-  })),
+  getCurrentWebviewWindow: vi.fn(() => mockWebviewWindow),
 }));
 
 vi.mock("@tauri-apps/plugin-fs", () => ({
@@ -41,11 +49,11 @@ vi.mock("@tauri-apps/plugin-dialog", () => ({
 }));
 
 vi.mock("@tauri-apps/plugin-store", () => ({
-  load: vi.fn().mockResolvedValue({
-    get: vi.fn().mockResolvedValue(null),
+  load: vi.fn().mockImplementation(async () => ({
+    get: vi.fn().mockResolvedValue(undefined),
     set: vi.fn().mockResolvedValue(undefined),
     save: vi.fn().mockResolvedValue(undefined),
-  }),
+  })),
 }));
 
 beforeEach(() => {
