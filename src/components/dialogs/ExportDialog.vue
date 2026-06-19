@@ -33,7 +33,7 @@ const previewStore = usePreviewStore();
       <div class="p-pane-padding space-y-4">
         <div
           v-if="previewStore.brokenImagePaths.length > 0"
-          class="bg-tertiary-fixed text-on-tertiary-fixed border border-tertiary-fixed-dim rounded p-3 flex gap-3"
+          class="bg-tertiary-container text-on-tertiary-container rounded p-3 flex gap-3"
         >
           <span
             class="material-symbols-outlined text-tertiary shrink-0"

@@ -22,7 +22,7 @@ function toggleTheme() {
 
 <template>
   <header
-    class="h-toolbar-height flex items-center justify-between px-pane-padding border-b border-outline-variant bg-surface-container-low select-none shrink-0"
+    class="app-toolbar h-toolbar-height flex items-center justify-between px-pane-padding border-b border-outline-variant bg-surface-container-low select-none shrink-0"
   >
     <div class="flex items-center gap-4">
       <span class="text-ui-header font-ui-header font-bold text-on-surface"

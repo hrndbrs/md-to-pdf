@@ -11,7 +11,7 @@ const docStore = useDocumentStore();
 
 <template>
   <footer
-    class="h-statusbar-height flex items-center justify-between px-pane-padding border-t border-outline-variant bg-surface-container-low text-status-text font-status-text text-on-surface-variant select-none shrink-0"
+    class="status-bar h-statusbar-height flex items-center justify-between px-pane-padding border-t border-outline-variant bg-surface-container-low text-status-text font-status-text text-on-surface-variant select-none shrink-0"
   >
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-1.5">
