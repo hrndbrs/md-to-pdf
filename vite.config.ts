@@ -22,7 +22,7 @@ export default defineConfig(() => ({
   // 1. prevent Vite from obscuring rust errors
   clearScreen: false,
   worker: {
-    format: "es",
+    format: "es" as const,
   },
   optimizeDeps: {
     include: ["monaco-editor/esm/vs/editor/editor.worker"],
