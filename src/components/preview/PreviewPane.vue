@@ -77,7 +77,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="preview-pane relative w-full h-full flex flex-col">
+  <div
+    class="preview-pane relative w-full h-full flex flex-col bg-surface-container"
+  >
     <PreviewEmpty
       v-if="!docStore.content && !docStore.filePath"
       @open="emit('request-open')"
@@ -85,7 +87,7 @@ onBeforeUnmount(() => {
 
     <div
       v-else-if="previewStore.renderError"
-      class="flex items-center justify-center h-full text-red-500 text-sm p-4"
+      class="flex items-center justify-center h-full text-error text-ui-body font-ui-body p-4"
     >
       Preview unavailable: {{ previewStore.renderError }}
     </div>

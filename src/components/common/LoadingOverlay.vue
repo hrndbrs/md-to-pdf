@@ -4,10 +4,10 @@ defineProps<{ message?: string }>();
 
 <template>
   <div
-    class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm gap-3"
+    class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-surface/80 backdrop-blur-sm gap-3"
   >
     <svg
-      class="animate-spin h-6 w-6 text-blue-600"
+      class="animate-spin h-6 w-6 text-primary"
       fill="none"
       viewBox="0 0 24 24"
     >
@@ -25,7 +25,7 @@ defineProps<{ message?: string }>();
         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
       />
     </svg>
-    <p v-if="message" class="text-sm text-zinc-600 dark:text-zinc-400">
+    <p v-if="message" class="text-ui-body font-ui-body text-on-surface-variant">
       {{ message }}
     </p>
   </div>
