@@ -10,17 +10,29 @@ const docStore = useDocumentStore();
 </script>
 
 <template>
-  <div
-    class="status-bar h-6 flex items-center gap-4 px-3 text-xs border-t border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 select-none shrink-0"
+  <footer
+    class="h-statusbar-height flex items-center justify-between px-pane-padding border-t border-outline-variant bg-surface-container-low text-status-text font-status-text text-on-surface-variant select-none shrink-0"
   >
-    <span>
-      <span v-if="docStore.isDirty" class="text-orange-500 mr-1">●</span>
-      {{ docStore.fileName }}
-      <span v-if="docStore.isDirty"> — unsaved changes</span>
-    </span>
-    <div class="flex-1" />
-    <span v-if="props.line"
-      >Ln {{ props.line }}, Col {{ props.column ?? 1 }}</span
-    >
-  </div>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1.5">
+        <span
+          v-if="docStore.isDirty"
+          class="w-2 h-2 rounded-full bg-orange-500 shrink-0"
+          aria-label="Unsaved changes"
+        />
+        <span v-else class="material-symbols-outlined !text-[12px]"
+          >description</span
+        >
+        <span>{{ docStore.fileName ?? "No active file" }}</span>
+        <span v-if="docStore.isDirty" class="opacity-70">— unsaved</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <span>Markdown-it</span>
+      <span>UTF-8</span>
+      <span v-if="props.line"
+        >Ln {{ props.line }}, Col {{ props.column ?? 1 }}</span
+      >
+    </div>
+  </footer>
 </template>
