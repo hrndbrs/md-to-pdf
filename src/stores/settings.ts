@@ -22,7 +22,7 @@ export const useSettingsStore = defineStore("settings", () => {
 
   async function loadFromPersisted() {
     try {
-      const store = await load("settings.json", { autoSave: true });
+      const store = await load("settings.json", { defaults: {}, autoSave: true });
       const t = await store.get<Theme>("theme");
       const fs = await store.get<number>("editorFontSize");
       const ps = await store.get<PaperSize>("defaultPaperSize");
@@ -36,7 +36,7 @@ export const useSettingsStore = defineStore("settings", () => {
 
   async function persist() {
     try {
-      const store = await load("settings.json", { autoSave: true });
+      const store = await load("settings.json", { defaults: {}, autoSave: true });
       await store.set("theme", theme.value);
       await store.set("editorFontSize", editorFontSize.value);
       await store.set("defaultPaperSize", defaultPaperSize.value);
