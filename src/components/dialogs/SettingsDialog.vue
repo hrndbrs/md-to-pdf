@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted, onBeforeUnmount } from "vue";
 import { useSettingsStore } from "@/stores/settings";
 import type { Theme, PaperSize } from "@/types/settings";
 
@@ -11,7 +12,7 @@ function onTheme(t: Theme) {
 }
 
 function onFontSize(e: Event) {
-  const val = parseInt((e.target as HTMLInputElement).value);
+  const val = parseInt((e.target as HTMLInputElement).value, 10);
   if (val >= 10 && val <= 32) {
     store.setFontSize(val);
     store.persist();
@@ -22,10 +23,17 @@ function onPaperSize(ps: PaperSize) {
   store.setPaperSize(ps);
   store.persist();
 }
+
+function onKeyDown(e: KeyboardEvent) {
+  if (e.key === "Escape") emit("close");
+}
+
+onMounted(() => window.addEventListener("keydown", onKeyDown));
+onBeforeUnmount(() => window.removeEventListener("keydown", onKeyDown));
 </script>
 
 <template>
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @click.self="emit('close')">
     <div
       class="bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-6 w-96 flex flex-col gap-5"
     >
@@ -57,10 +65,11 @@ function onPaperSize(ps: PaperSize) {
 
       <!-- Font size -->
       <div class="flex items-center gap-3">
-        <label class="text-sm font-medium text-zinc-700 dark:text-zinc-300 w-28"
+        <label for="editor-font-size" class="text-sm font-medium text-zinc-700 dark:text-zinc-300 w-28"
           >Editor font size</label
         >
         <input
+          id="editor-font-size"
           type="number"
           min="10"
           max="32"

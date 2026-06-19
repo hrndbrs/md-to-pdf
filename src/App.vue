@@ -50,6 +50,7 @@ watch(
       );
     }
   },
+  { deep: true },
 );
 
 onMounted(async () => {
