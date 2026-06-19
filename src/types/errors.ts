@@ -3,6 +3,9 @@ export type AppErrorCode =
   | "PERMISSION_DENIED"
   | "IO_ERROR"
   | "PRINT_FAILED"
+  | "PDF_TIMEOUT"
+  | "PDF_LOAD_FAILED"
+  | "PDF_RENDER_FAILED"
   | "INVALID_PATH"
   | "UNKNOWN";
 
