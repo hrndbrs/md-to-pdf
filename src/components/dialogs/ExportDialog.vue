@@ -6,46 +6,141 @@ const previewStore = usePreviewStore();
 </script>
 
 <template>
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+  <div
+    class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+    @click.self="emit('cancel')"
+  >
     <div
-      class="bg-white dark:bg-zinc-800 rounded-lg shadow-xl p-6 w-[420px] flex flex-col gap-4"
+      class="bg-surface-container-lowest border border-outline-variant rounded-lg w-full max-w-[420px] flex flex-col overflow-hidden"
     >
-      <h2 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-        Export to PDF
-      </h2>
-
+      <!-- Header -->
       <div
-        v-if="previewStore.brokenImagePaths.length > 0"
-        class="text-sm bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded p-3 text-yellow-800 dark:text-yellow-200"
+        class="px-pane-padding py-3 border-b border-outline-variant flex items-center justify-between"
       >
-        ⚠ {{ previewStore.brokenImagePaths.length }} image(s) could not be
-        found. They will appear as blank spaces in the PDF.
+        <h3 class="text-ui-header font-ui-header text-on-surface">
+          Export to PDF
+        </h3>
+        <button
+          class="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-container-highest transition-colors text-on-surface-variant"
+          aria-label="Close"
+          @click="emit('cancel')"
+        >
+          <span class="material-symbols-outlined !text-[16px]">close</span>
+        </button>
       </div>
 
-      <p class="text-sm text-zinc-600 dark:text-zinc-400">
-        A print dialog will open. To save as PDF:
-      </p>
-      <ul
-        class="text-sm text-zinc-600 dark:text-zinc-400 list-disc pl-5 space-y-1"
-      >
-        <li>
-          <strong>macOS:</strong> Click <em>PDF</em> → <em>Save as PDF…</em>
-        </li>
-        <li>
-          <strong>Windows:</strong> Select <em>Microsoft Print to PDF</em>
-        </li>
-        <li><strong>Linux:</strong> Select <em>Print to File</em></li>
-      </ul>
+      <!-- Content -->
+      <div class="p-pane-padding space-y-4">
+        <div
+          v-if="previewStore.brokenImagePaths.length > 0"
+          class="bg-tertiary-fixed text-on-tertiary-fixed border border-tertiary-fixed-dim rounded p-3 flex gap-3"
+        >
+          <span
+            class="material-symbols-outlined text-tertiary shrink-0"
+            style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;"
+            >warning</span
+          >
+          <p class="text-ui-body font-ui-body">
+            {{ previewStore.brokenImagePaths.length }} image(s) could not be
+            found. They will be missing in the PDF.
+          </p>
+        </div>
 
-      <div class="flex justify-end gap-3 mt-2">
+        <div>
+          <h4
+            class="text-ui-label-sm font-ui-label-sm text-on-surface-variant uppercase mb-2"
+          >
+            Printing Instructions
+          </h4>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3">
+              <div
+                class="mt-0.5 w-6 h-6 shrink-0 bg-surface-container-high rounded flex items-center justify-center"
+              >
+                <span
+                  class="material-symbols-outlined !text-[14px] text-on-surface-variant"
+                  >terminal</span
+                >
+              </div>
+              <div>
+                <p
+                  class="font-semibold text-on-surface text-ui-body font-ui-body"
+                >
+                  macOS
+                </p>
+                <p class="text-ui-body font-ui-body text-on-surface-variant">
+                  Press
+                  <kbd
+                    class="px-1 bg-surface-container-high rounded font-editor-main"
+                    >⌘ P</kbd
+                  >, select "Save as PDF" in the destination.
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div
+                class="mt-0.5 w-6 h-6 shrink-0 bg-surface-container-high rounded flex items-center justify-center"
+              >
+                <span
+                  class="material-symbols-outlined !text-[14px] text-on-surface-variant"
+                  >window</span
+                >
+              </div>
+              <div>
+                <p
+                  class="font-semibold text-on-surface text-ui-body font-ui-body"
+                >
+                  Windows
+                </p>
+                <p class="text-ui-body font-ui-body text-on-surface-variant">
+                  Press
+                  <kbd
+                    class="px-1 bg-surface-container-high rounded font-editor-main"
+                    >Ctrl P</kbd
+                  >, choose "Microsoft Print to PDF".
+                </p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div
+                class="mt-0.5 w-6 h-6 shrink-0 bg-surface-container-high rounded flex items-center justify-center"
+              >
+                <span
+                  class="material-symbols-outlined !text-[14px] text-on-surface-variant"
+                  >grid_view</span
+                >
+              </div>
+              <div>
+                <p
+                  class="font-semibold text-on-surface text-ui-body font-ui-body"
+                >
+                  Linux
+                </p>
+                <p class="text-ui-body font-ui-body text-on-surface-variant">
+                  Press
+                  <kbd
+                    class="px-1 bg-surface-container-high rounded font-editor-main"
+                    >Ctrl P</kbd
+                  >, select "Print to File" with PDF output.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="px-pane-padding py-3 bg-surface-container-low border-t border-outline-variant flex justify-end gap-2"
+      >
         <button
-          class="px-4 py-2 rounded text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-700"
+          class="px-4 py-1.5 text-ui-header font-ui-header text-on-surface-variant hover:text-on-surface transition-colors"
           @click="emit('cancel')"
         >
           Cancel
         </button>
         <button
-          class="px-4 py-2 rounded text-sm font-medium bg-blue-600 text-white hover:bg-blue-700"
+          class="px-4 py-1.5 bg-primary text-on-primary text-ui-header font-ui-header rounded hover:brightness-110 transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           @click="emit('confirm')"
         >
           Open Print Dialog
