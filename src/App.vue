@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue";
 import AppToolbar from "@/components/toolbar/AppToolbar.vue";
 import StatusBar from "@/components/common/StatusBar.vue";
 import ErrorBanner from "@/components/common/ErrorBanner.vue";
+import EditorPane from "@/components/editor/EditorPane.vue";
 import { useSettingsStore } from "@/stores/settings";
 import { useDocument } from "@/composables/useDocument";
 import { useTheme } from "@/composables/useTheme";
@@ -48,11 +49,15 @@ onMounted(async () => {
     />
     <div class="flex-1 flex overflow-hidden">
       <!-- Editor and Preview panels — wired in Tasks 13 & 16 -->
-      <div
-        class="flex-1 flex items-center justify-center text-zinc-400 dark:text-zinc-600 text-sm"
-      >
-        Editor loading...
-      </div>
+      <EditorPane
+        class="flex-1 overflow-hidden"
+        @cursor-change="
+          (l, c) => {
+            cursorLine = l;
+            cursorCol = c;
+          }
+        "
+      />
       <div class="w-px bg-zinc-200 dark:bg-zinc-700" />
       <div
         class="flex-1 flex items-center justify-center text-zinc-400 dark:text-zinc-600 text-sm"
