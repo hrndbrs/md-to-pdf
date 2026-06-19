@@ -38,7 +38,7 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKeyDown));
     @click.self="emit('close')"
   >
     <div
-      class="w-full max-w-[420px] bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col overflow-hidden"
+      class="w-full max-w-105 bg-surface-container-lowest border border-outline-variant rounded-lg flex flex-col overflow-hidden"
     >
       <!-- Header -->
       <div
@@ -70,7 +70,7 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKeyDown));
               "
               @click="onTheme(t)"
             >
-              <span class="material-symbols-outlined !text-[18px]">
+              <span class="material-symbols-outlined text-4.5!">
                 {{ t === "light" ? "light_mode" : "dark_mode" }}
               </span>
               {{ t.charAt(0).toUpperCase() + t.slice(1) }}

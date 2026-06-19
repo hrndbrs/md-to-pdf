@@ -25,9 +25,9 @@ function toggleTheme() {
     class="app-toolbar h-toolbar-height flex items-center justify-between px-pane-padding border-b border-outline-variant bg-surface-container-low select-none shrink-0"
   >
     <div class="flex items-center gap-4">
-      <span class="text-ui-header font-ui-header font-bold text-on-surface"
-        >md-to-pdf</span
-      >
+      <span class="text-ui-header font-ui-header font-bold text-on-surface">
+        MD to PDF
+      </span>
       <div class="h-4 w-px bg-outline-variant" />
       <div class="flex items-center gap-0.5">
         <button class="toolbar-icon-btn" title="New (⌘N)" @click="emit('new')">
@@ -64,7 +64,7 @@ function toggleTheme() {
         :disabled="!docStore.content"
         @click="emit('export')"
       >
-        <span class="material-symbols-outlined !text-[16px]"
+        <span class="material-symbols-outlined text-4!"
           >picture_as_pdf</span
         >
         <span>Export PDF</span>

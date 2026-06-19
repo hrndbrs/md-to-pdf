@@ -23,7 +23,7 @@ const { errors, clearError } = useAppErrors();
         aria-label="Dismiss"
         @click="clearError(err.id)"
       >
-        <span class="material-symbols-outlined !text-[16px]">close</span>
+        <span class="material-symbols-outlined text-4!">close</span>
       </button>
     </div>
   </div>

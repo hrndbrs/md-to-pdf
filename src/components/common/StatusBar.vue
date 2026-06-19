@@ -20,7 +20,7 @@ const docStore = useDocumentStore();
           class="w-2 h-2 rounded-full bg-orange-500 shrink-0"
           aria-label="Unsaved changes"
         />
-        <span v-else class="material-symbols-outlined !text-[12px]"
+        <span v-else class="material-symbols-outlined text-3!"
           >description</span
         >
         <span>{{ docStore.fileName ?? "No active file" }}</span>

@@ -11,7 +11,7 @@ const previewStore = usePreviewStore();
     @click.self="emit('cancel')"
   >
     <div
-      class="bg-surface-container-lowest border border-outline-variant rounded-lg w-full max-w-[420px] flex flex-col overflow-hidden"
+      class="bg-surface-container-lowest border border-outline-variant rounded-lg w-full max-w-105 flex flex-col overflow-hidden"
     >
       <!-- Header -->
       <div
@@ -25,7 +25,7 @@ const previewStore = usePreviewStore();
           aria-label="Close"
           @click="emit('cancel')"
         >
-          <span class="material-symbols-outlined !text-[16px]">close</span>
+          <span class="material-symbols-outlined">close</span>
         </button>
       </div>
 
@@ -36,8 +36,7 @@ const previewStore = usePreviewStore();
           class="bg-tertiary-container text-on-tertiary-container rounded p-3 flex gap-3"
         >
           <span
-            class="material-symbols-outlined text-tertiary shrink-0"
-            style="font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;"
+            class="material-symbols-outlined icon-filled text-tertiary shrink-0"
             >warning</span
           >
           <p class="text-ui-body font-ui-body">
@@ -58,7 +57,7 @@ const previewStore = usePreviewStore();
                 class="mt-0.5 w-6 h-6 shrink-0 bg-surface-container-high rounded flex items-center justify-center"
               >
                 <span
-                  class="material-symbols-outlined !text-[14px] text-on-surface-variant"
+                  class="material-symbols-outlined text-3.5! text-on-surface-variant"
                   >terminal</span
                 >
               </div>
@@ -82,7 +81,7 @@ const previewStore = usePreviewStore();
                 class="mt-0.5 w-6 h-6 shrink-0 bg-surface-container-high rounded flex items-center justify-center"
               >
                 <span
-                  class="material-symbols-outlined !text-[14px] text-on-surface-variant"
+                  class="material-symbols-outlined text-3.5! text-on-surface-variant"
                   >window</span
                 >
               </div>
@@ -106,7 +105,7 @@ const previewStore = usePreviewStore();
                 class="mt-0.5 w-6 h-6 shrink-0 bg-surface-container-high rounded flex items-center justify-center"
               >
                 <span
-                  class="material-symbols-outlined !text-[14px] text-on-surface-variant"
+                  class="material-symbols-outlined text-3.5! text-on-surface-variant"
                   >grid_view</span
                 >
               </div>
