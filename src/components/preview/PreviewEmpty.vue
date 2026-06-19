@@ -4,23 +4,51 @@ const emit = defineEmits<{ open: [] }>();
 
 <template>
   <div
-    class="flex flex-col items-center justify-center h-full gap-6 text-zinc-400 dark:text-zinc-600 select-none"
+    class="flex flex-col items-center justify-center h-full gap-6 select-none p-12 text-center bg-surface-container"
   >
-    <div class="text-center">
-      <p class="text-2xl font-semibold text-zinc-600 dark:text-zinc-300 mb-2">
-        md-to-pdf
-      </p>
-      <p class="text-sm">Drop a .md file here, or</p>
+    <div class="relative">
+      <div
+        class="w-24 h-24 bg-surface-container-highest rounded-full flex items-center justify-center"
+      >
+        <span class="material-symbols-outlined !text-[48px] text-primary"
+          >markdown</span
+        >
+      </div>
+      <div
+        class="absolute -bottom-2 -right-2 w-10 h-10 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center"
+      >
+        <span class="material-symbols-outlined !text-[20px]"
+          >picture_as_pdf</span
+        >
+      </div>
     </div>
-    <button
-      class="px-4 py-2 rounded bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-medium"
-      @click="emit('open')"
-    >
-      Open File…
-    </button>
-    <p class="text-xs">
-      New document?
-      <button class="underline" @click="emit('open')">Start writing</button>
-    </p>
+
+    <div>
+      <h2
+        class="text-ui-header font-ui-header font-semibold text-on-surface text-xl mb-1"
+      >
+        md-to-pdf
+      </h2>
+      <p class="text-ui-body font-ui-body text-on-surface-variant">
+        Drop a .md file here, or
+      </p>
+    </div>
+
+    <div class="flex flex-col items-center gap-4">
+      <button
+        class="flex items-center gap-2 px-6 py-2 bg-primary text-on-primary text-ui-header font-ui-header rounded-lg hover:brightness-110 transition-all"
+        @click="emit('open')"
+      >
+        <span class="material-symbols-outlined !text-[20px]">upload_file</span>
+        Open File…
+      </button>
+      <button
+        class="flex items-center gap-1 text-primary text-ui-body font-ui-body hover:underline"
+        @click="emit('open')"
+      >
+        <span class="material-symbols-outlined !text-[18px]">add_circle</span>
+        New document?
+      </button>
+    </div>
   </div>
 </template>
