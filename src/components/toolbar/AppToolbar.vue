@@ -91,7 +91,7 @@ function toggleTheme() {
 </template>
 
 <style scoped>
-@reference "tailwindcss";
+@reference "../../assets/css/main.css";
 
 .toolbar-icon-btn {
   @apply w-7 h-7 flex items-center justify-center rounded text-on-surface-variant hover:bg-surface-container-highest transition-colors cursor-pointer;
