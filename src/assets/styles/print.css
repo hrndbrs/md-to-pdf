@@ -1,0 +1,24 @@
+@media print {
+  /* Hide all app chrome — only the preview content prints */
+  .app-toolbar,
+  .status-bar,
+  .error-banners,
+  .editor-pane,
+  .resize-handle {
+    display: none !important;
+  }
+
+  /* Remove iframe decorations */
+  .preview-pane {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  @page {
+    margin: 20mm;
+  }
+}
+
+/* Styles injected into the preview iframe for print */
+/* These are embedded via the MarkdownRenderingService print variant (V2) */
+/* For V1, the iframe's existing CSS handles print correctly via @media print inside preview.css */

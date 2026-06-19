@@ -73,5 +73,17 @@ export function useDocument() {
     await getCurrentWebviewWindow().setTitle(`${dirty}${name} — md-to-pdf`);
   }
 
-  return { openFile, newDocument, save, saveAs, canClose, updateWindowTitle };
+  async function openPath(path: string) {
+    try {
+      const content = await fileSystemService.readFile(path);
+      docStore.openFile(path, content);
+      await updateWindowTitle();
+    } catch (err) {
+      addError(
+        `Failed to open file: ${err instanceof Error ? err.message : String(err)}`,
+      );
+    }
+  }
+
+  return { openFile, newDocument, save, saveAs, canClose, updateWindowTitle, openPath };
 }
