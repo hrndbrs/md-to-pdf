@@ -86,7 +86,7 @@ export class MarkdownRenderingService {
       const fileFound = await exists(absolutePath).catch(() => false);
       if (fileFound) {
         const assetUrl = convertFileSrc(absolutePath);
-        result = result.replace(fullMatch, `![${alt}](${assetUrl})`);
+        result = result.replaceAll(fullMatch, `![${alt}](${assetUrl})`);
       } else {
         brokenImages.push(absolutePath);
       }
