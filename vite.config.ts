@@ -1,10 +1,7 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
-// @ts-expect-error type error without @types/node package
-import process from "node:process";
-// @ts-expect-error type error without @types/node package
-import { resolve } from "node:path";
+import { fileURLToPath, URL } from "node:url";
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
@@ -13,7 +10,7 @@ export default defineConfig(() => ({
 
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"),
+      "@": fileURLToPath(new URL("src", import.meta.url)),
     },
   },
 
