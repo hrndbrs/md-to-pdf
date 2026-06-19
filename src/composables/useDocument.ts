@@ -70,7 +70,7 @@ export function useDocument() {
   async function updateWindowTitle() {
     const dirty = docStore.isDirty ? "● " : "";
     const name = docStore.fileName;
-    await getCurrentWebviewWindow().setTitle(`${dirty}${name} — md-to-pdf`);
+    await getCurrentWebviewWindow().setTitle(`${dirty}${name} — MD to PDF`);
   }
 
   async function openPath(path: string) {
@@ -85,5 +85,13 @@ export function useDocument() {
     }
   }
 
-  return { openFile, newDocument, save, saveAs, canClose, updateWindowTitle, openPath };
+  return {
+    openFile,
+    newDocument,
+    save,
+    saveAs,
+    canClose,
+    updateWindowTitle,
+    openPath,
+  };
 }

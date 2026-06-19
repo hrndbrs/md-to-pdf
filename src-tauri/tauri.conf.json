@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "md-to-pdf",
+  "productName": "MD to PDF",
   "version": "0.1.0",
   "identifier": "github.com/hrndbrs/md-to-pdf",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "md-to-pdf",
+        "title": "MD to PDF",
         "width": 1280,
         "height": 800,
         "minWidth": 800,

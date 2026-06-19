@@ -1,4 +1,4 @@
-# md-to-pdf
+# MD to PDF
 
 Markdown editor with live preview and PDF export. Runs locally, no cloud.
 
