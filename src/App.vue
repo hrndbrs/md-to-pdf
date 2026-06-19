@@ -4,12 +4,27 @@ import AppToolbar from "@/components/toolbar/AppToolbar.vue";
 import StatusBar from "@/components/common/StatusBar.vue";
 import ErrorBanner from "@/components/common/ErrorBanner.vue";
 import { useSettingsStore } from "@/stores/settings";
+import { useDocument } from "@/composables/useDocument";
+import { useTheme } from "@/composables/useTheme";
+import { useKeyboard } from "@/composables/useKeyboard";
 
 const settingsStore = useSettingsStore();
+const { openFile, newDocument, save, saveAs } = useDocument();
 const showSettings = ref(false);
 const showExport = ref(false);
 const cursorLine = ref(1);
 const cursorCol = ref(1);
+
+useTheme();
+useKeyboard({
+  onNew: newDocument,
+  onOpen: openFile,
+  onSave: save,
+  onSaveAs: saveAs,
+  onExport: () => {
+    showExport.value = true;
+  },
+});
 
 onMounted(async () => {
   await settingsStore.loadFromPersisted();
