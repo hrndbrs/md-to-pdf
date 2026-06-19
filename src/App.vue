@@ -13,7 +13,6 @@ import { usePreviewStore } from "@/stores/preview";
 import { useDocument } from "@/composables/useDocument";
 import { useTheme } from "@/composables/useTheme";
 import { useKeyboard } from "@/composables/useKeyboard";
-import { useExport } from "@/composables/useExport";
 import { useAppErrors } from "@/composables/useAppErrors";
 
 const settingsStore = useSettingsStore();
@@ -21,7 +20,6 @@ const previewStore = usePreviewStore();
 const { addError, clearAll } = useAppErrors();
 const { openFile, newDocument, save, saveAs, openPath, canClose } =
   useDocument();
-const { runExport } = useExport();
 
 const showSettings = ref(false);
 const showExport = ref(false);
@@ -96,16 +94,7 @@ onMounted(async () => {
     </div>
     <StatusBar :line="cursorLine" :column="cursorCol" />
 
-    <ExportDialog
-      v-if="showExport"
-      @confirm="
-        () => {
-          showExport = false;
-          runExport();
-        }
-      "
-      @cancel="showExport = false"
-    />
+    <ExportDialog v-if="showExport" @cancel="showExport = false" />
     <SettingsDialog v-if="showSettings" @close="showSettings = false" />
   </div>
 </template>
