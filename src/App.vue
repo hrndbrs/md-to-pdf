@@ -88,7 +88,7 @@ onMounted(async () => {
           }
         "
       />
-      <div class="w-px bg-zinc-200 dark:bg-zinc-700 shrink-0" />
+      <div class="w-px bg-outline-variant shrink-0" />
       <PreviewPane
         class="flex-1 overflow-hidden"
         @request-open="(path?: string) => (path ? openPath(path) : openFile())"
