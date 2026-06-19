@@ -1,5 +1,28 @@
 import { vi, beforeEach } from "vitest";
 
+// Mock window.matchMedia — happy-dom never fires 'change' events for media queries.
+// addEventListener is implemented to immediately call the handler with matches:false
+// so that PDFExportService.export() resolves without waiting for the real print dialog.
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: vi.fn().mockImplementation((query: string) => {
+    const handlers: Array<(e: MediaQueryListEvent) => void> = [];
+    return {
+      matches: false,
+      media: query,
+      addEventListener: vi.fn((_event: string, handler: (e: MediaQueryListEvent) => void) => {
+        handlers.push(handler);
+        // Fire synchronously after print() is called — simulates dialog close
+        queueMicrotask(() => {
+          handler({ matches: false } as MediaQueryListEvent);
+        });
+      }),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    };
+  }),
+});
+
 // Mock Tauri core — prevents "window.__TAURI_INTERNALS__ is not defined" in tests
 vi.mock("@tauri-apps/api/core", () => ({
   invoke: vi.fn(),

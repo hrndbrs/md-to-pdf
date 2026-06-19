@@ -9,9 +9,12 @@ import { useSettingsStore } from "@/stores/settings";
 import { useDocument } from "@/composables/useDocument";
 import { useTheme } from "@/composables/useTheme";
 import { useKeyboard } from "@/composables/useKeyboard";
+import ExportDialog from "@/components/dialogs/ExportDialog.vue";
+import { useExport } from "@/composables/useExport";
 
 const settingsStore = useSettingsStore();
 const { openFile, newDocument, save, saveAs, openPath } = useDocument();
+const { runExport } = useExport();
 const showSettings = ref(false);
 const showExport = ref(false);
 const cursorLine = ref(1);
@@ -66,5 +69,10 @@ onMounted(async () => {
       />
     </div>
     <StatusBar :line="cursorLine" :column="cursorCol" />
+    <ExportDialog
+      v-if="showExport"
+      @confirm="() => { showExport = false; runExport() }"
+      @cancel="showExport = false"
+    />
   </div>
 </template>
