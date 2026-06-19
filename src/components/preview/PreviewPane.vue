@@ -65,8 +65,7 @@ onMounted(async () => {
       (event.payload as { type: string; paths: string[] }).paths ?? [];
     const mdPath = paths.find((p) => /\.(md|markdown)$/i.test(p));
     if (mdPath) {
-      // Delegate to useDocument — emit event consumed by App.vue
-      emit("request-open", mdPath as never);
+      emit("request-open", mdPath);
     }
   });
 });
@@ -92,7 +91,7 @@ onBeforeUnmount(() => {
     </div>
 
     <iframe
-      v-show="docStore.content || docStore.filePath"
+      v-show="(docStore.content || docStore.filePath) && !previewStore.renderError"
       ref="iframeRef"
       class="flex-1 w-full border-none"
       sandbox="allow-same-origin allow-scripts"
