@@ -4,6 +4,7 @@ import { useDocumentStore } from "@/stores/document";
 const props = defineProps<{
   line?: number;
   column?: number;
+  vimMode?: string;
 }>();
 
 const docStore = useDocumentStore();
@@ -28,6 +29,9 @@ const docStore = useDocumentStore();
       </div>
     </div>
     <div class="flex items-center gap-4">
+      <span v-if="props.vimMode" class="font-mono font-bold tracking-wider">{{
+        props.vimMode
+      }}</span>
       <span>Markdown-it</span>
       <span>UTF-8</span>
       <span v-if="props.line"

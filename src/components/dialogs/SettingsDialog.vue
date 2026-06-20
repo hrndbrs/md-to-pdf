@@ -24,6 +24,16 @@ function onPaperSize(ps: PaperSize) {
   store.persist();
 }
 
+function onVimMode(v: boolean) {
+  store.setVimMode(v);
+  store.persist();
+}
+
+function onFormatOnSave(v: boolean) {
+  store.setFormatOnSave(v);
+  store.persist();
+}
+
 function onKeyDown(e: KeyboardEvent) {
   if (e.key === "Escape") emit("close");
 }
@@ -122,6 +132,57 @@ onBeforeUnmount(() => window.removeEventListener("keydown", onKeyDown));
               @click="onPaperSize(ps)"
             >
               {{ ps }}
+            </button>
+          </div>
+        </section>
+
+        <!-- Editor -->
+        <section class="space-y-3">
+          <label
+            class="text-ui-label-sm font-ui-label-sm text-on-surface-variant uppercase block"
+          >
+            Editor
+          </label>
+
+          <div class="flex items-center justify-between">
+            <span class="text-ui-body font-ui-body text-on-surface"
+              >Vim mode</span
+            >
+            <button
+              class="relative w-10 h-6 rounded-full transition-colors focus:outline-none"
+              :class="
+                store.vimMode ? 'bg-primary' : 'bg-surface-container-highest'
+              "
+              :aria-pressed="store.vimMode"
+              aria-label="Toggle Vim mode"
+              @click="onVimMode(!store.vimMode)"
+            >
+              <span
+                class="absolute top-1 w-4 h-4 rounded-full bg-white transition-transform shadow"
+                :class="store.vimMode ? 'translate-x-0' : '-translate-x-4'"
+              />
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-ui-body font-ui-body text-on-surface">
+              Format on save
+            </span>
+            <button
+              class="relative w-10 h-6 rounded-full transition-colors focus:outline-none"
+              :class="
+                store.formatOnSave
+                  ? 'bg-primary'
+                  : 'bg-surface-container-highest'
+              "
+              :aria-pressed="store.formatOnSave"
+              aria-label="Toggle format on save"
+              @click="onFormatOnSave(!store.formatOnSave)"
+            >
+              <span
+                class="absolute top-1 w-4 h-4 rounded-full bg-white transition-transform shadow"
+                :class="store.formatOnSave ? 'translate-x-0' : '-translate-x-4'"
+              />
             </button>
           </div>
         </section>

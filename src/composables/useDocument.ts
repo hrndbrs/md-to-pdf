@@ -1,11 +1,14 @@
 import { confirm } from "@tauri-apps/plugin-dialog";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { fileSystemService } from "@/services/fileSystem";
+import { formatterService } from "@/services/formatter";
 import { useDocumentStore } from "@/stores/document";
+import { useSettingsStore } from "@/stores/settings";
 import { useAppErrors } from "@/composables/useAppErrors";
 
 export function useDocument() {
   const docStore = useDocumentStore();
+  const settingsStore = useSettingsStore();
   const { addError } = useAppErrors();
 
   async function openFile() {
@@ -32,7 +35,19 @@ export function useDocument() {
       return saveAs();
     }
     try {
-      await fileSystemService.writeFile(docStore.filePath, docStore.content);
+      let content = docStore.content;
+      if (settingsStore.formatOnSave) {
+        try {
+          content = await formatterService.format(content);
+          docStore.setContent(content);
+        } catch {
+          addError(
+            "Format on save failed — saving unformatted content.",
+            "warning",
+          );
+        }
+      }
+      await fileSystemService.writeFile(docStore.filePath, content);
       docStore.markSaved();
       await updateWindowTitle();
     } catch (err) {

@@ -1,63 +1,117 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, watch, shallowRef } from "vue";
-import * as monaco from "monaco-editor";
-import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
+import {
+  EditorView,
+  keymap,
+  lineNumbers,
+  type ViewUpdate,
+} from "@codemirror/view";
+import { EditorState, Compartment } from "@codemirror/state";
+import { defaultKeymap, historyKeymap, history } from "@codemirror/commands";
+import { markdown } from "@codemirror/lang-markdown";
+import { languages } from "@codemirror/language-data";
+import { oneDark } from "@codemirror/theme-one-dark";
+import { vim, Vim, getCM } from "@replit/codemirror-vim";
 import { useDocumentStore } from "@/stores/document";
 import { useSettingsStore } from "@/stores/settings";
-
-// Configure Monaco to use local worker (runs once per app load)
-if (!self.MonacoEnvironment) {
-  self.MonacoEnvironment = {
-    getWorker() {
-      return new editorWorker();
-    },
-  };
-}
+import { useAppErrors } from "@/composables/useAppErrors";
 
 const emit = defineEmits<{
   "cursor-change": [line: number, column: number];
+  save: [];
+  "vim-mode-change": [mode: string];
 }>();
 
 const docStore = useDocumentStore();
 const settingsStore = useSettingsStore();
+const { addError } = useAppErrors();
 const containerRef = shallowRef<HTMLDivElement>();
-let editor: monaco.editor.IStandaloneCodeEditor | null = null;
+let view: EditorView | null = null;
+let vimListenerAttached = false;
+
+const vimCompartment = new Compartment();
+const themeCompartment = new Compartment();
+const fontSizeCompartment = new Compartment();
+
+function fontSizeTheme(size: number) {
+  return EditorView.theme({
+    ".cm-content": { fontSize: `${size}px` },
+    ".cm-gutters": { fontSize: `${size}px` },
+  });
+}
+
+function registerVimCommands() {
+  Vim.defineEx("write", "w", () => {
+    emit("save");
+  });
+}
+
+function attachVimModeListener() {
+  if (!view || vimListenerAttached) return;
+  const cm = getCM(view);
+  if (!cm) return;
+  cm.on("vim-mode-change", ({ mode }: { mode: string }) => {
+    emit("vim-mode-change", mode.toUpperCase());
+  });
+  vimListenerAttached = true;
+}
 
 onMounted(() => {
   if (!containerRef.value) return;
 
-  editor = monaco.editor.create(containerRef.value, {
-    value: docStore.content,
-    language: "markdown",
-    theme: settingsStore.theme === "dark" ? "vs-dark" : "vs",
-    fontSize: settingsStore.editorFontSize,
-    lineNumbers: "on",
-    wordWrap: "on",
-    minimap: { enabled: false },
-    scrollBeyondLastLine: false,
-    automaticLayout: true,
+  const state = EditorState.create({
+    doc: docStore.content,
+    extensions: [
+      history(),
+      lineNumbers(),
+      EditorView.lineWrapping,
+      markdown({ codeLanguages: languages }),
+      keymap.of([...defaultKeymap, ...historyKeymap]),
+      EditorView.theme({
+        "&": { height: "100%" },
+        ".cm-scroller": { overflow: "auto" },
+      }),
+      fontSizeCompartment.of(fontSizeTheme(settingsStore.editorFontSize)),
+      themeCompartment.of(settingsStore.theme === "dark" ? oneDark : []),
+      vimCompartment.of(settingsStore.vimMode ? [vim()] : []),
+      EditorView.updateListener.of((update: ViewUpdate) => {
+        if (update.docChanged) {
+          const value = update.state.doc.toString();
+          if (value !== docStore.content) {
+            docStore.setContent(value);
+          }
+        }
+        if (update.selectionSet || update.docChanged) {
+          const pos = update.state.selection.main.head;
+          const line = update.state.doc.lineAt(pos);
+          emit("cursor-change", line.number, pos - line.from + 1);
+        }
+      }),
+    ],
   });
 
-  editor.onDidChangeModelContent(() => {
-    const value = editor!.getValue();
-    if (value !== docStore.content) {
-      docStore.setContent(value);
-    }
-  });
+  view = new EditorView({ state, parent: containerRef.value });
 
-  editor.onDidChangeCursorPosition((e) => {
-    emit("cursor-change", e.position.lineNumber, e.position.column);
-  });
+  if (settingsStore.vimMode) {
+    registerVimCommands();
+    attachVimModeListener();
+    emit("vim-mode-change", "NORMAL");
+  }
 });
 
-// Sync store → editor when file is opened externally (e.g., via toolbar Open)
+// Sync store → editor when file opened externally
 watch(
   () => docStore.content,
   (newContent) => {
-    if (editor && editor.getValue() !== newContent) {
-      const pos = editor.getPosition();
-      editor.setValue(newContent);
-      if (pos) editor.setPosition(pos);
+    if (!view) return;
+    const current = view.state.doc.toString();
+    if (current !== newContent) {
+      const head = view.state.selection.main.head;
+      const clampedHead = Math.min(head, newContent.length);
+      view.dispatch({
+        changes: { from: 0, to: current.length, insert: newContent },
+        selection: { anchor: clampedHead },
+      });
     }
   },
 );
@@ -66,7 +120,9 @@ watch(
 watch(
   () => settingsStore.theme,
   (theme) => {
-    monaco.editor.setTheme(theme === "dark" ? "vs-dark" : "vs");
+    view?.dispatch({
+      effects: themeCompartment.reconfigure(theme === "dark" ? oneDark : []),
+    });
   },
 );
 
@@ -74,13 +130,40 @@ watch(
 watch(
   () => settingsStore.editorFontSize,
   (size) => {
-    editor?.updateOptions({ fontSize: size });
+    view?.dispatch({
+      effects: fontSizeCompartment.reconfigure(fontSizeTheme(size)),
+    });
+  },
+);
+
+// Toggle vim mode
+watch(
+  () => settingsStore.vimMode,
+  (enabled) => {
+    try {
+      view?.dispatch({
+        effects: vimCompartment.reconfigure(enabled ? [vim()] : []),
+      });
+      if (enabled) {
+        registerVimCommands();
+        attachVimModeListener();
+        emit("vim-mode-change", "NORMAL");
+      } else {
+        emit("vim-mode-change", "");
+      }
+    } catch {
+      settingsStore.setVimMode(false);
+      addError(
+        "Vim mode failed to initialize — falling back to normal mode.",
+        "warning",
+      );
+    }
   },
 );
 
 onBeforeUnmount(() => {
-  editor?.dispose();
-  editor = null;
+  view?.destroy();
+  view = null;
 });
 </script>
 

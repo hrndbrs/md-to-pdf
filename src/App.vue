@@ -25,6 +25,7 @@ const showSettings = ref(false);
 const showExport = ref(false);
 const cursorLine = ref(1);
 const cursorCol = ref(1);
+const vimModeLabel = ref("");
 
 useTheme();
 useKeyboard({
@@ -85,6 +86,12 @@ onMounted(async () => {
             cursorCol = c;
           }
         "
+        @save="save"
+        @vim-mode-change="
+          (m) => {
+            vimModeLabel = m;
+          }
+        "
       />
       <div class="w-px bg-outline-variant shrink-0" />
       <PreviewPane
@@ -92,7 +99,11 @@ onMounted(async () => {
         @request-open="(path?: string) => (path ? openPath(path) : openFile())"
       />
     </div>
-    <StatusBar :line="cursorLine" :column="cursorCol" />
+    <StatusBar
+      :line="cursorLine"
+      :column="cursorCol"
+      :vim-mode="vimModeLabel"
+    />
 
     <ExportDialog v-if="showExport" @cancel="showExport = false" />
     <SettingsDialog v-if="showSettings" @close="showSettings = false" />
