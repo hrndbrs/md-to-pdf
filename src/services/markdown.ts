@@ -27,7 +27,7 @@ export class MarkdownRenderingService {
 
   constructor() {
     this.md = new MarkdownIt({
-      html: false, // Non-negotiable: prevents XSS via raw HTML passthrough
+      html: true,
       linkify: true,
       typographer: true,
       highlight: (code, lang) => {

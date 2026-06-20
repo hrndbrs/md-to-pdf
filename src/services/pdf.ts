@@ -26,6 +26,8 @@ export class PDFExportService {
   ): string {
     let result = options.includeToc ? this.injectToc(html) : html;
 
+    result = result.replace(/<details(?![^>]*\bopen\b)([^>]*)>/gi, "<details open$1>");
+
     const contentWidth = pageWidth - marginPx * 2;
     const printStyle = `<style>
       @page {
@@ -77,6 +79,7 @@ export class PDFExportService {
       .toc-h2 { padding-left: 1em; }
       .toc-h3 { padding-left: 2em; }
       .toc-h4 { padding-left: 3em; }
+      details > *:not(summary) { display: block !important; }
     </style>`;
 
     return result.replace("</head>", `${printStyle}</head>`);
