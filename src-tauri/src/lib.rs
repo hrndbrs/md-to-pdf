@@ -503,7 +503,7 @@ mod win_pdf {
 mod linux {
     use super::{parse_headings, HeadingInfo, HEADINGS_JS};
     use glib::MainContext;
-    use gtk::{PageSetup, PageSetupExt, PaperSize, PrintSettings, PrintSettingsExt, Unit};
+    use gtk::{prelude::*, PageSetup, PaperSize, PrintSettings, Unit};
     use std::sync::{Arc, Mutex};
     use webkit2gtk::{PrintOperation, PrintOperationExt, WebView, WebViewExt as _};
 
@@ -570,8 +570,8 @@ mod linux {
         settings.set("output-uri", Some(format!("file://{output_path}").as_str()));
 
         let print_op = PrintOperation::new(web_view);
-        print_op.set_print_settings(Some(&settings));
-        print_op.set_default_page_setup(Some(&page_setup));
+        print_op.set_print_settings(&settings);
+        print_op.set_page_setup(&page_setup);
 
         let done: Arc<Mutex<bool>> = Arc::new(Mutex::new(false));
         let done2 = Arc::clone(&done);
