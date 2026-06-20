@@ -503,7 +503,7 @@ mod win_pdf {
 mod linux {
     use super::{parse_headings, HeadingInfo, HEADINGS_JS};
     use glib::MainContext;
-    use gtk::{prelude::*, PageSetup, PaperSize, PrintSettings, Unit};
+    use gtk::{PageSetup, PaperSize, PrintSettings, Unit};
     use std::sync::{Arc, Mutex};
     use webkit2gtk::{PrintOperation, PrintOperationExt, WebView, WebViewExt as _};
 
