@@ -21,9 +21,6 @@ export default defineConfig(() => ({
   worker: {
     format: "es" as const,
   },
-  optimizeDeps: {
-    include: ["monaco-editor/esm/vs/editor/editor.worker"],
-  },
   // 2. tauri expects a fixed port, fail if that port is not available
   server: {
     port: 1420,
