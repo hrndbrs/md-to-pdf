@@ -17,9 +17,7 @@ const emit = defineEmits<{ open: [] }>();
       <div
         class="absolute -bottom-2 -right-2 w-10 h-10 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center"
       >
-        <span class="material-symbols-outlined text-5!"
-          >picture_as_pdf</span
-        >
+        <span class="material-symbols-outlined text-5!">picture_as_pdf</span>
       </div>
     </div>
 

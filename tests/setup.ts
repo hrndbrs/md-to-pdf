@@ -10,13 +10,15 @@ Object.defineProperty(window, "matchMedia", {
     return {
       matches: false,
       media: query,
-      addEventListener: vi.fn((_event: string, handler: (e: MediaQueryListEvent) => void) => {
-        handlers.push(handler);
-        // Fire synchronously after print() is called — simulates dialog close
-        queueMicrotask(() => {
-          handler({ matches: false } as MediaQueryListEvent);
-        });
-      }),
+      addEventListener: vi.fn(
+        (_event: string, handler: (e: MediaQueryListEvent) => void) => {
+          handlers.push(handler);
+          // Fire synchronously after print() is called — simulates dialog close
+          queueMicrotask(() => {
+            handler({ matches: false } as MediaQueryListEvent);
+          });
+        },
+      ),
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
     };

@@ -93,7 +93,9 @@ onBeforeUnmount(() => {
     </div>
 
     <iframe
-      v-show="(docStore.content || docStore.filePath) && !previewStore.renderError"
+      v-show="
+        (docStore.content || docStore.filePath) && !previewStore.renderError
+      "
       ref="iframeRef"
       class="flex-1 w-full border-none"
       sandbox="allow-same-origin allow-scripts"

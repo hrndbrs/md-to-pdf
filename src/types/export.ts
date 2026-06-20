@@ -12,8 +12,18 @@ export const PAGE_SIZES: Record<
   PageLayout,
   { label: string; width: number; height: number; jsPdfFormat: string }
 > = {
-  a4: { label: "A4 (210 × 297mm)", width: 794, height: 1123, jsPdfFormat: "a4" },
-  letter: { label: "US Letter", width: 816, height: 1056, jsPdfFormat: "letter" },
+  a4: {
+    label: "A4 (210 × 297mm)",
+    width: 794,
+    height: 1123,
+    jsPdfFormat: "a4",
+  },
+  letter: {
+    label: "US Letter",
+    width: 816,
+    height: 1056,
+    jsPdfFormat: "letter",
+  },
   legal: { label: "Legal", width: 816, height: 1344, jsPdfFormat: "legal" },
 };
 

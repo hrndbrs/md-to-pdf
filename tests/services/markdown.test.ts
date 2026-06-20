@@ -61,7 +61,10 @@ describe("MarkdownRenderingService", () => {
   });
 
   it("renders inline HTML (html: true)", async () => {
-    const { html } = await svc.render("<details><summary>Title</summary>Content</details>", {});
+    const { html } = await svc.render(
+      "<details><summary>Title</summary>Content</details>",
+      {},
+    );
     expect(html).toContain("<details>");
     expect(html).toContain("<summary>Title</summary>");
   });

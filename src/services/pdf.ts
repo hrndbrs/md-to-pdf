@@ -26,7 +26,10 @@ export class PDFExportService {
   ): string {
     let result = options.includeToc ? this.injectToc(html) : html;
 
-    result = result.replace(/<details(?![^>]*\bopen\b)([^>]*)>/gi, "<details open$1>");
+    result = result.replace(
+      /<details(?![^>]*\bopen\b)([^>]*)>/gi,
+      "<details open$1>",
+    );
 
     const contentWidth = pageWidth - marginPx * 2;
     const printStyle = `<style>
@@ -95,13 +98,19 @@ export class PDFExportService {
     const items = headings
       .map((h) => {
         const level = h.tagName.toLowerCase();
-        const id = h.id || h.textContent?.trim().toLowerCase().replace(/\s+/g, "-") || "";
+        const id =
+          h.id ||
+          h.textContent?.trim().toLowerCase().replace(/\s+/g, "-") ||
+          "";
         return `<li class="toc-${level}"><a href="#${id}">${h.textContent}</a></li>`;
       })
       .join("\n");
 
     const toc = `<nav class="toc"><h2>Table of Contents</h2><ul>${items}</ul></nav>`;
-    return html.replace('<body class="markdown-body">', `<body class="markdown-body">${toc}`);
+    return html.replace(
+      '<body class="markdown-body">',
+      `<body class="markdown-body">${toc}`,
+    );
   }
 }
 
