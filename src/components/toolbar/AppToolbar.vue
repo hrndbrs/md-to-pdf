@@ -64,9 +64,7 @@ function toggleTheme() {
         :disabled="!docStore.content"
         @click="emit('export')"
       >
-        <span class="material-symbols-outlined text-4!"
-          >picture_as_pdf</span
-        >
+        <span class="material-symbols-outlined text-4!">picture_as_pdf</span>
         <span>Export PDF</span>
       </button>
       <div class="h-4 w-px bg-outline-variant" />
@@ -94,6 +92,6 @@ function toggleTheme() {
 @reference "../../assets/css/main.css";
 
 .toolbar-icon-btn {
-  @apply w-7 h-7 flex items-center justify-center rounded text-on-surface-variant hover:bg-surface-container-highest transition-colors cursor-pointer;
+  @apply size-7 flex items-center justify-center rounded text-on-surface-variant hover:bg-surface-container-highest transition-colors cursor-pointer;
 }
 </style>

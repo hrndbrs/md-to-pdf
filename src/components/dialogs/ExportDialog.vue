@@ -61,7 +61,7 @@ const canExport = computed(() => outputPath.value.length > 0);
     @click.self="emit('cancel')"
   >
     <div
-      class="bg-surface-container-highest border border-outline-variant rounded-lg w-full max-w-[520px] flex flex-col overflow-hidden shadow-2xl"
+      class="bg-surface-container-highest border border-outline-variant rounded-lg w-full max-w-130 flex flex-col overflow-hidden shadow-2xl"
     >
       <!-- Header -->
       <div
