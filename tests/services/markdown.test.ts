@@ -60,10 +60,10 @@ describe("MarkdownRenderingService", () => {
     expect(html).toContain("const");
   });
 
-  it("blocks raw HTML injection (html: false)", async () => {
-    const { html } = await svc.render("<script>alert(1)</script>", {});
-    expect(html).not.toContain("<script>");
-    expect(html).toContain("&lt;script&gt;");
+  it("renders inline HTML (html: true)", async () => {
+    const { html } = await svc.render("<details><summary>Title</summary>Content</details>", {});
+    expect(html).toContain("<details>");
+    expect(html).toContain("<summary>Title</summary>");
   });
 
   it("resolves relative image paths with basePath", async () => {
