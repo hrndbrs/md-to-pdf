@@ -230,7 +230,7 @@ mod macos {
 
         // Get content height
         let doc_height: f64 = eval_js!(
-            "document.documentElement.scrollHeight" => f64,
+            "document.body.scrollHeight" => f64,
             |r| if r.is_null() { 8000.0 } else { msg_send![r, doubleValue] }
         );
 
