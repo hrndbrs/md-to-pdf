@@ -5,10 +5,14 @@ export interface AppSettings {
   theme: Theme;
   editorFontSize: number;
   defaultPaperSize: PaperSize;
+  vimMode: boolean;
+  formatOnSave: boolean;
 }
 
 export const DEFAULT_SETTINGS: AppSettings = {
   theme: "light",
   editorFontSize: 14,
   defaultPaperSize: "A4",
+  vimMode: false,
+  formatOnSave: false,
 };

@@ -63,4 +63,41 @@ describe("SettingsStore", () => {
 
     expect(store.theme).toBe("light");
   });
+
+  it("initializes vimMode and formatOnSave as false", () => {
+    const store = useSettingsStore();
+    expect(store.vimMode).toBe(false);
+    expect(store.formatOnSave).toBe(false);
+  });
+
+  it("setVimMode updates vimMode", () => {
+    const store = useSettingsStore();
+    store.setVimMode(true);
+    expect(store.vimMode).toBe(true);
+  });
+
+  it("setFormatOnSave updates formatOnSave", () => {
+    const store = useSettingsStore();
+    store.setFormatOnSave(true);
+    expect(store.formatOnSave).toBe(true);
+  });
+
+  it("loadFromPersisted applies stored vimMode and formatOnSave", async () => {
+    const mockStore = {
+      get: vi.fn().mockImplementation(async (key: string) => {
+        if (key === "vimMode") return true;
+        if (key === "formatOnSave") return true;
+        return null;
+      }),
+      set: vi.fn().mockResolvedValue(undefined),
+      save: vi.fn().mockResolvedValue(undefined),
+    };
+    vi.mocked(load).mockResolvedValue(mockStore as never);
+
+    const store = useSettingsStore();
+    await store.loadFromPersisted();
+
+    expect(store.vimMode).toBe(true);
+    expect(store.formatOnSave).toBe(true);
+  });
 });
